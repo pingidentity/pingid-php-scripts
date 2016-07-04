@@ -16,6 +16,15 @@ function pingid_base64url_encode($input) {
 	return str_replace('=', '', strtr(base64_encode($input), '+/', '-_'));
 }
 
+function pingid_base64url_decode($input) {
+	$remainder = strlen($input) % 4;
+	if ($remainder) {
+		$padlen = 4 - $remainder;
+		$input .= str_repeat('=', $padlen);
+	}
+	return base64_decode(strtr($input, '-_', '+/'));
+}
+
 function pingid_jwt_encode($payload, $key, $org_alias, $token) {
 	$header = array(
 			'alg' => 'HS256',
@@ -59,6 +68,7 @@ function pingid_send_request($props, $path, $body) {
 	curl_setopt($ch, CURLOPT_VERBOSE, true);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 	curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
 	$result = curl_exec($ch);
 	curl_close($ch);
 
@@ -66,11 +76,13 @@ function pingid_send_request($props, $path, $body) {
 }
 
 function pingid_get_user_details($props, $username) {
-	return pingid_send_request($props, 'getuserdetails/do', array(
+	$jwt = pingid_send_request($props, 'getuserdetails/do', array(
 		'getSameDeviceUsers' => true,
 		'userName' => $username,
 		'clientData' => null
 	));	
+	list($headb64, $bodyb64, $cryptob64) = explode('.', $jwt);
+	return pingid_base64url_decode($bodyb64);
 }
 
 if (count($argv) < 2) {
