@@ -11,6 +11,7 @@
 			on the [Ping Identity developer communities] . See also the DISCLAIMER file in
 			this directory.
 */
+define('PINGID_API_VERSION', '4.9');
 
 function pingid_base64url_encode($input) {
 	return str_replace('=', '', strtr(base64_encode($input), '+/', '-_'));
@@ -49,7 +50,7 @@ function pingid_send_request($props, $path, $body) {
 			'orgAlias' => $props['org_alias'],
 			'secretKey' => $props['token'],
 			'timestamp' => pingid_get_timestamp(),
-			'version' => '4.6',
+			'version' => PINGID_API_VERSION,
 			'locale' => 'en',
 			'sessionId' => null
 		),
@@ -64,8 +65,9 @@ function pingid_send_request($props, $path, $body) {
 
 	$api_url = $props['admin_url'] . '/rest/4/' . $path;
 	
+	#echo 
 	#print_r($data);
-	#exit;
+	#echo
 	
 	$headers = array();
 	$headers[] = 'Content-Type: application/json';
@@ -78,6 +80,14 @@ function pingid_send_request($props, $path, $body) {
 	curl_close($ch);
 
 	return $result;
+}
+
+function pingid_exec_command($prop_file, $cmd_path, $req_array) {
+	$props = parse_ini_file($prop_file, false, INI_SCANNER_RAW);
+	$req_array['clientData'] = null;
+	$jwt = pingid_send_request($props, $cmd_path . '/do', $req_array);
+	list($headb64, $bodyb64, $cryptob64) = explode('.', $jwt);
+	return pingid_base64url_decode($bodyb64);
 }
 
 ?>

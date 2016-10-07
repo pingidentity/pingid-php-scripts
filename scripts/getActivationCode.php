@@ -1,9 +1,9 @@
 <?php
 /*
-	PingID API Sample PHP Script: addUser.php
+	PingID API Sample PHP Script: getActivationCode.php
 	
-	This script will add a PingID user via the PingID API AddUser operation.
-	For more information, review the API documentation:
+	This script will call the PingID API GetActivationCode operation to get an activation code for
+	a PingID user. For more information, review the API documentation:
 	https://developer.pingidentity.com/en/api/pingid-api.html
 
 	Note:	This software is open sourced by Ping Identity but not supported commercially
@@ -14,18 +14,13 @@
 
 require_once 'Utils.php';
 
-if (count($argv) < 5) {
-	echo "Usage: $argv[0] <username> <first-name> <last-name> <e-mail> [true|false]\n";
+if (count($argv) < 2) {
+	echo "Usage: $argv[0] <username>\n";
 	exit;
 }
 
-$response = pingid_exec_command('pingid.properties', 'adduser', array(
-		'activateUser' => count($argv) > 5 ? $argv[5] == "true" : "true",
-		'email' => $argv[4],
-		'fName' => $argv[2],
-		'lname' => $argv[3],
-		'userName' => $argv[1],
-		'role' => 'REGULAR'
+$response = pingid_exec_command('pingid.properties', 'getactivationcode', array(
+		'userName' => $argv[1]
 ));
 print $response;
 

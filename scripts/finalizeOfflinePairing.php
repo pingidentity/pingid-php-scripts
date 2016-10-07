@@ -1,8 +1,8 @@
 <?php
 /*
-	PingID API Sample PHP Script: deleteUser.php
+	PingID API Sample PHP Script: finalizeOfflinePairing.php
 	
-	This script will delete a PingID user via the PingID API DeleteUser operation.
+	This script will finalize offline pairing via the PingID API FinalizeOfflinePairing operation.
 	For more information, review the API documentation:
 	https://developer.pingidentity.com/en/api/pingid-api.html
 
@@ -14,13 +14,14 @@
 
 require_once 'Utils.php';
 
-if (count($argv) < 2) {
-	echo "Usage: $argv[0] <username>\n";
+if (count($argv) < 3) {
+	echo "Usage: $argv[0] <sessionid> <otp>\n";
 	exit;
 }
 
-print pingid_exec_command('pingid.properties', 'deleteuser', array(
-		'userName' => $argv[1]
+print pingid_exec_command('pingid.properties', 'finalizeofflinepairing', array(
+		'sessionId' => $argv[1],
+		'otp' => $argv[2]
 ));
 
 ?>
