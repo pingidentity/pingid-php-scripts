@@ -19,7 +19,9 @@ if (count($argv) < 5) {
 	exit;
 }
 
-$response = pingid_exec_command('pingid.properties', 'adduser', array(
+$props_file = 'pingid.properties';
+
+$response = pingid_exec_command($props_file, 'adduser', array(
 		'activateUser' => count($argv) > 5 ? $argv[5] == "true" : "true",
 		'email' => $argv[4],
 		'fName' => $argv[2],
@@ -28,6 +30,8 @@ $response = pingid_exec_command('pingid.properties', 'adduser', array(
 		'role' => 'REGULAR'
 ));
 print $response;
+
+$props = parse_ini_file($props_file, false, INI_SCANNER_RAW);
 
 $json = json_decode($response);
 print "\n\n # Activation code is: " . $json->responseBody->activationCode . "\n";
