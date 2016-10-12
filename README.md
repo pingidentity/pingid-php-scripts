@@ -19,7 +19,7 @@ Requires:
 
 1a. Enroll user with mobile device  
 - `php addUser jdoe John Doe hzandbelt+johndoe@pingidentity.com`  
-<pickup pairing key or QR code URL from output>  
+*pickup pairing key or QR code URL from output*  
 - `php getUserDetails.php jdoe`  
 
 1b. Add e-mail OTP  
@@ -33,7 +33,7 @@ Requires:
 
 2b. Add mobile device later  
 - `php getActivationCode.php jdoe`  
-<pickup pairing key or QR code URL from output>  
+*pickup pairing key or QR code URL from output*  
 - `php getPairingStatus.php <activation-code>`
 
 ### Disclaimer
