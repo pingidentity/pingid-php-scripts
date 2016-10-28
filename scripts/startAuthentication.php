@@ -1,9 +1,9 @@
 <?php
 /*
-	PingID API Sample PHP Script: getUserDetails.php
+	PingID API Sample PHP Script: startAuthentication.php
 	
-	This script will query the PingID API GetUserDetails operation to return the details
-	about a PingID user. For more information, review the API documentation:
+	This script will execute the PingID API StartAuthentication operation to start the
+	authentication of a PingID user. For more information, review the API documentation:
 	https://developer.pingidentity.com/en/api/pingid-api.html
 
 	Note:	This software is open sourced by Ping Identity but not supported commercially
@@ -19,8 +19,8 @@ if (count($argv) < 2) {
 	exit;
 }
 
-print pingid_exec_command('pingid.properties', 'getuserdetails', array(
-		'getSameDeviceUsers' => true,
+print pingid_exec_command('pingid.properties', 'startauthentication', array(		
+		'spAlias' => 'web',
 		'userName' => $argv[1]
 ));
 
