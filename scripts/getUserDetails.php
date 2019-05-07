@@ -19,7 +19,7 @@ function pingid_base64url_encode($input) {
 function pingid_jwt_encode($payload, $key, $org_alias, $token) {
 	$header = array(
 			'alg' => 'HS256',
-			'org_alias' => $org_alias,
+			'orgAlias' => $org_alias,
 			'token' => $token
 	);
 	$segments = array();
